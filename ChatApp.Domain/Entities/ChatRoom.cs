@@ -9,11 +9,13 @@ namespace ChatApp.Domain.Entities
     public class ChatRoom
     {
         public string Id { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public readonly List<User> _users = new();
         public readonly List<Message> _messages = new();
         public IReadOnlyCollection<User> Users => _users.AsReadOnly();
         public IReadOnlyCollection<Message> Messages => _messages.AsReadOnly();
+
+        private ChatRoom() { }
 
         public ChatRoom(string name, User creator)
         {
@@ -31,7 +33,7 @@ namespace ChatApp.Domain.Entities
         public void AddUser(User user)
         {
             if (user == null)
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
 
             if (_users.Contains(user))
                 throw new InvalidOperationException("User is already a member of the room.");
@@ -42,7 +44,7 @@ namespace ChatApp.Domain.Entities
         public void RemoveUser(User user)
         {
             if (user == null)
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
 
             if (!_users.Contains(user))
                 throw new InvalidOperationException("User is not a member of the room.");
@@ -52,6 +54,10 @@ namespace ChatApp.Domain.Entities
 
         public void SendMessage(User user, string content)
         {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user), "User cannot be null.");
+            if (string.IsNullOrWhiteSpace(content))
+                throw new ArgumentException("Content cannot be null or empty.", nameof(content));
             if (!_users.Contains(user))
                 throw new InvalidOperationException("User must be a member of the room to send messages.");
 

@@ -9,6 +9,8 @@
         public User User { get; private set; }
         public string ChatId { get; private set; }
         public ChatRoom Chat { get; private set; }
+
+        private Message() { }
         public Message(string userId, string content, ChatRoom chat)
         {
             if (string.IsNullOrWhiteSpace(content))
