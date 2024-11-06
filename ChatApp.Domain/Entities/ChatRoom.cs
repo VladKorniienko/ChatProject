@@ -15,7 +15,7 @@ namespace ChatApp.Domain.Entities
         public IReadOnlyCollection<User> Users => _users.AsReadOnly();
         public IReadOnlyCollection<Message> Messages => _messages.AsReadOnly();
 
-        private ChatRoom() { }
+        public ChatRoom() { }
 
         public ChatRoom(string name, User creator)
         {
